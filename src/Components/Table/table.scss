@@ -5,14 +5,31 @@
   align-items: center;
   gap: 1rem;
   margin-top: 5rem;
+  width: 100%;
 }
 
 .truckTable {
   margin: 1rem auto;
+  border-collapse: collapse;
+
+  th {
+    background-color: rgb(52, 52, 156);
+    color: white;
+  }
+  th,
+  td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
 
   input {
-    overflow: 'auto';
-    resize: 'vertical';
+    overflow: auto;
+    resize: vertical;
+    width: 140px;
+  }
+  .change-input {
+    width: 100px;
   }
 }
 
@@ -25,7 +42,7 @@
     background-color: rgb(52, 52, 156);
     border-radius: 0.5rem;
     border: none;
-    color: bisque;
+    color: rgb(219, 219, 219);
     font-weight: bold;
 
     &:hover {
@@ -35,4 +52,19 @@
       background-color: rgb(88, 88, 183);
     }
   }
+}
+
+.change-button {
+  padding: 0.8rem 1.2rem;
+  background-color: rgb(52, 52, 156);
+  border-radius: 0.5rem;
+  border: none;
+  color: bisque;
+  font-weight: bold;
+}
+
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
 }
