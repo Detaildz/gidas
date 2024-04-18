@@ -1,9 +1,11 @@
-export const generateWeekDates = (offset) => {
+export const generateWeekDates = (weekNumber) => {
   const today = new Date();
-  const weekStart = new Date(today);
-  const mondayOffset = ((today.getDay() + 6) % 7) - 7 * offset; // Calculate the number of days to subtract to get to Monday
+  const yearStart = new Date(today.getFullYear(), 0, 1); // January 1st of the current year
+  const weekStart = new Date(yearStart);
 
-  weekStart.setDate(today.getDate() - mondayOffset);
+  // Calculate the number of days to add to get to the start of the specified week
+  const daysToAdd = (weekNumber - 1) * 7;
+  weekStart.setDate(weekStart.getDate() + daysToAdd);
 
   const dates = [];
 
@@ -23,4 +25,18 @@ export const generateWeekDates = (offset) => {
   }
 
   return dates;
+};
+
+export const getWeekNumber = (date) => {
+  date = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  );
+
+  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+
+  const weekNo = Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
+
+  return weekNo;
 };

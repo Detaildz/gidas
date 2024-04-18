@@ -2,12 +2,13 @@
 import './main.css';
 
 //components
-import Table from '../Table/Table';
+
+import Trucks from '../Trucks/Trucks';
 
 function Main() {
   return (
     <div>
-      <Table></Table>
+      <Trucks></Trucks>
     </div>
   );
 }

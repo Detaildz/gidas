@@ -1,56 +1,49 @@
 import { useState, useEffect } from 'react';
-import { generateWeekDates } from '../../helpers/sortWeekHelper';
-
+import { generateWeekDates, getWeekNumber } from '../../helpers/sortWeekHelper';
+import { v4 as uuidv4 } from 'uuid';
 import './table.scss';
+// TODO Add error handling
+// TODO save selected week to local storage to keep it on refresh
+// TODO Every week should have seperate information
 
 const Table = () => {
   const [weekOffset, setWeekOffset] = useState(0);
   const [weekDates, setWeekDates] = useState([]);
-  // State to hold truck data
   const [trucks, setTrucks] = useState([]);
+  const [weeks, setWeeks] = useState([]);
+  const thisWeek = getWeekNumber(new Date());
+  const [weekNumber, setWeekNumber] = useState(thisWeek);
 
   useEffect(() => {
-    // Load trucks data from local storage
-    const savedTrucks = JSON.parse(localStorage.getItem('trucks')) || [];
-    setTrucks(savedTrucks);
-  }, []);
-  //Let change Truck carrier and price
-
-  generateWeekDates(weekOffset);
-
-  useEffect(() => {
-    const dates = generateWeekDates(weekOffset);
+    const dates = generateWeekDates(weekOffset + 1); // Adjusted week number
     setWeekDates(dates);
   }, [weekOffset]);
 
   const goToPreviousWeek = () => {
+    setWeekNumber(weekNumber - 1);
     setWeekOffset((prevOffset) => prevOffset - 1);
   };
 
   const goToNextWeek = () => {
+    setWeekNumber(weekNumber + 1);
     setWeekOffset((prevOffset) => prevOffset + 1);
   };
+
   const saveChanges = (updatedTruck) => {
-    // Get existing trucks data from local storage or initialize if not exists
     const storedTrucks = JSON.parse(localStorage.getItem('trucks')) || [];
 
-    // Find the index of the updated truck in the stored trucks array
     const index = storedTrucks.findIndex(
       (truck) => truck.id === updatedTruck.id
     );
-
-    // If the truck exists in the stored data, update it; otherwise, add it
     if (index !== -1) {
       storedTrucks[index] = updatedTruck;
     } else {
       storedTrucks.push(updatedTruck);
     }
 
-    // Save the updated trucks array back to local storage
     localStorage.setItem('trucks', JSON.stringify(storedTrucks));
   };
 
-  // Function to handle input change
   const handleInputChange = (e, id, column) => {
     const updatedTrucks = trucks.map((truck) => {
       if (truck.id === id) {
@@ -61,27 +54,6 @@ const Table = () => {
       return truck;
     });
     setTrucks(updatedTrucks);
-  };
-
-  const handleAddTruck = () => {
-    const newId = trucks.length + 1;
-    setTrucks([
-      ...trucks,
-      {
-        id: newId,
-        carrier: 'Naujas vežėjas',
-        truckNumber: '',
-        price: '',
-        monday: '',
-        tuesday: '',
-        wednesday: '',
-        thursday: '',
-        friday: '',
-        saturday: '',
-        sunday: '',
-        inputsDisabled: true,
-      },
-    ]);
   };
 
   const deleteTruck = (id) => {
@@ -95,12 +67,7 @@ const Table = () => {
   const handleToggleInputs = (id) => {
     const updatedTrucks = trucks.map((truck) => {
       if (truck.id === id) {
-        // Toggle inputsDisabled state
         const newInputsDisabled = !truck.inputsDisabled;
-        // If inputs are being disabled, save the changes
-        // if (!newInputsDisabled) {
-        //   saveChanges(truck); // Function to save changes, you can define it separately
-        // }
         return { ...truck, inputsDisabled: newInputsDisabled };
       }
       return truck;
@@ -108,14 +75,51 @@ const Table = () => {
     setTrucks(updatedTrucks);
   };
 
+  const addTruckToWeek = (weekIndex, newTruck) => {
+    setWeeks((prevWeeks) => {
+      const updatedWeeks = [...prevWeeks];
+      updatedWeeks[weekIndex] = {
+        ...updatedWeeks[weekIndex],
+        trucks: [...(updatedWeeks[weekIndex]?.trucks || []), newTruck],
+      };
+      return updatedWeeks;
+    });
+  };
+
+  const handleAddTruck = () => {
+    const newId = uuidv4(); // Generate a random UUID;
+    const newTruck = {
+      id: newId,
+      carrier: 'Naujas vežėjas',
+      truckNumber: '',
+      price: '',
+      monday: '',
+      tuesday: '',
+      wednesday: '',
+      thursday: '',
+      friday: '',
+      saturday: '',
+      sunday: '',
+      inputsDisabled: true,
+    };
+
+    const currentWeekIndex = weekOffset;
+    addTruckToWeek(currentWeekIndex, newTruck);
+  };
+
   return (
     <>
       <div className="tableContainer">
         <div className="active-buttons">
           <button onClick={handleAddTruck}>Add Truck</button>
-          <div>
-            <button onClick={goToPreviousWeek}>Previous Week</button>
+          <div className="week-buttons">
             <button onClick={goToNextWeek}>Next Week</button>
+            {weekOffset === thisWeek - 1 ? (
+              `Dabar W${weekOffset + 1}`
+            ) : (
+              <h1>W{weekOffset + 1}</h1>
+            )}
+            <button onClick={goToPreviousWeek}>Previous Week</button>
           </div>
         </div>
 
@@ -132,106 +136,117 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {trucks.map((truck) => (
-              <tr key={truck.id}>
-                <td>
-                  <button
-                    onClick={() => handleToggleInputs(truck.id)}
-                    className="change-button"
-                  >
-                    Pakeisti
-                  </button>
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.carrier}
-                    disabled={truck.inputsDisabled}
-                    onChange={(e) => handleInputChange(e, truck.id, 'carrier')}
-                    className="change-input"
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.truckNumber}
-                    disabled={truck.inputsDisabled}
-                    onChange={(e) =>
-                      handleInputChange(e, truck.id, 'truckNumber')
-                    }
-                    className="change-input"
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.price}
-                    disabled={truck.inputsDisabled}
-                    onChange={(e) => handleInputChange(e, truck.id, 'price')}
-                    className="change-input"
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.monday}
-                    onChange={(e) => handleInputChange(e, truck.id, 'monday')}
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.tuesday}
-                    onChange={(e) => handleInputChange(e, truck.id, 'tuesday')}
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.wednesday}
-                    onChange={(e) =>
-                      handleInputChange(e, truck.id, 'wednesday')
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.thursday}
-                    onChange={(e) => handleInputChange(e, truck.id, 'thursday')}
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.friday}
-                    onChange={(e) => handleInputChange(e, truck.id, 'friday')}
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.saturday}
-                    onChange={(e) => handleInputChange(e, truck.id, 'saturday')}
-                  />
-                </td>
-                <td>
-                  <input
-                    key={truck.id}
-                    value={truck.sunday}
-                    onChange={(e) => handleInputChange(e, truck.id, 'sunday')}
-                  />
-                </td>
-                <tr>
-                  <button
-                    onClick={() => deleteTruck(truck.id)}
-                    className="delete-button"
-                  >
-                    x
-                  </button>
+            {weeks[weekOffset]?.trucks.map(
+              ({
+                id,
+                carrier,
+                inputsDisabled,
+                truckNumber,
+                price,
+                monday,
+                tuesday,
+                wednesday,
+                thursday,
+                friday,
+                saturday,
+                sunday,
+              }) => (
+                <tr key={id}>
+                  <td>
+                    <button
+                      onClick={() => handleToggleInputs(id)}
+                      className="change-button"
+                    >
+                      Pakeisti
+                    </button>
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={carrier}
+                      disabled={inputsDisabled}
+                      onChange={(e) => handleInputChange(e, id, 'carrier')}
+                      className="change-input"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={truckNumber}
+                      disabled={inputsDisabled}
+                      onChange={(e) => handleInputChange(e, id, 'truckNumber')}
+                      className="change-input"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={price}
+                      disabled={inputsDisabled}
+                      onChange={(e) => handleInputChange(e, id, 'price')}
+                      className="change-input"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={monday}
+                      onChange={(e) => handleInputChange(e, id, 'monday')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={tuesday}
+                      onChange={(e) => handleInputChange(e, id, 'tuesday')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={wednesday}
+                      onChange={(e) => handleInputChange(e, id, 'wednesday')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={thursday}
+                      onChange={(e) => handleInputChange(e, id, 'thursday')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={friday}
+                      onChange={(e) => handleInputChange(e, id, 'friday')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={saturday}
+                      onChange={(e) => handleInputChange(e, id, 'saturday')}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      key={id}
+                      value={sunday}
+                      onChange={(e) => handleInputChange(e, id, 'sunday')}
+                    />
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => deleteTruck(id)}
+                      className="delete-button"
+                    >
+                      x
+                    </button>
+                  </td>
                 </tr>
-              </tr>
-            ))}
+              )
+            )}
           </tbody>
         </table>
       </div>
