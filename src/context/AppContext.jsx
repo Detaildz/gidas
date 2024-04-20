@@ -1,6 +1,7 @@
 import { createContext, useCallback, useState, useMemo } from 'react';
 import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
+import { cfg } from '../cfg/cfg.js';
 
 export const AppContext = createContext();
 
@@ -12,7 +13,7 @@ export const AppContextProvider = ({ children }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/trucks');
+      const response = await fetch(`${cfg.API.HOST}/trucks`);
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
@@ -101,8 +102,11 @@ export const AppContextProvider = ({ children }) => {
   };
 
   const handleAddTruck = async () => {
+    const timestamp = Date.now(); // Current timestamp in milliseconds
+    const randomNumber = Math.floor(Math.random() * 1000); // Generates a random number between 0 and 999
+    const customId = selectedWeek + `${timestamp}${randomNumber}`;
     const newTruck = {
-      customId: selectedWeek * 1000 + trucks.length + 1,
+      customId: customId,
       week: selectedWeek,
       carrier: '',
       truckNumber: '',
