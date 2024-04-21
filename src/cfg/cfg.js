@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import { config } from 'dotenv';
+config(); // Load environment variables from .env file
 
 export const cfg = {
   API: {
