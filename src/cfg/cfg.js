@@ -4,8 +4,8 @@ config(); // Load environment variables from .env file
 export const cfg = {
   API: {
     HOST:
-      import.meta.env.VITE_API_HOST === 'production'
-        ? 'https://api-shop-nine.vercel.app'
+      import.meta.env.MODE === 'production'
+        ? 'https://gidas-api.vercel.app/trucks'
         : 'http://localhost:3000',
   },
 };
