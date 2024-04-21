@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin-top: 5rem;
+
   width: 100%;
 
   .header {
@@ -47,88 +47,5 @@
   // !CHANGE Pakeist Spalva
   .with-input {
     background-color: bisque;
-  }
-}
-
-.active-buttons {
-  display: flex;
-  gap: 1rem;
-
-  button {
-    padding: 0.8rem 1.2rem;
-    background-color: rgb(52, 52, 156);
-    border-radius: 0.5rem;
-    border: none;
-    color: rgb(219, 219, 219);
-    font-weight: bold;
-
-    &:hover {
-      background-color: rgb(63, 63, 164);
-    }
-    &:active {
-      background-color: rgb(88, 88, 183);
-    }
-  }
-
-  .add-truck {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .week-button {
-    margin-left: 5px;
-  }
-}
-
-.change-button {
-  padding: 0.3rem 1.2rem;
-  background-color: rgb(52, 52, 156);
-  border-radius: 0.5rem;
-  border: none;
-  color: bisque;
-  font-weight: bold;
-}
-
-.delete-button {
-  background-color: red;
-  color: white;
-  border: none;
-}
-
-.week-buttons {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  h1 {
-    font-weight: bold;
-    font-size: 1.5rem;
-
-    color: rgb(52, 52, 156);
-  }
-}
-.week-buttons {
-  display: flex;
-  gap: 1rem;
-  .week-select {
-    background-color: rgb(124, 18, 244, 0.2);
-    color: rgb(0, 0, 0);
-    padding: 0.8rem;
-    border-radius: 0.5rem;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgb(149, 77, 230, 0.5);
-    }
-  }
-
-  .selected-week {
-    font-weight: bold;
-    font-size: 1.4rem;
-    color: rgb(52, 52, 156);
-    margin: 0 1rem;
   }
 }

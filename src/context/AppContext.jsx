@@ -10,6 +10,7 @@ export const AppContextProvider = ({ children }) => {
   const thisWeek = getWeekNumber(new Date());
   const [selectedWeek, setSelectedWeek] = useState(thisWeek);
   const [inputsDisabled, setInputsDisabled] = useState(false);
+  const [category, setCategory] = useState('export');
 
   const fetchData = useCallback(async () => {
     try {
@@ -101,13 +102,14 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  const handleAddTruck = async () => {
+  const handleAddTruck = async (category) => {
     const timestamp = Date.now(); // Current timestamp in milliseconds
     const randomNumber = Math.floor(Math.random() * 1000); // Generates a random number between 0 and 999
     const customId = selectedWeek + `${timestamp}${randomNumber}`;
     const newTruck = {
       customId: customId,
       week: selectedWeek,
+      category: category,
       carrier: '',
       truckNumber: '',
       price: '',
@@ -121,14 +123,16 @@ export const AppContextProvider = ({ children }) => {
       inputsDisabled: true,
     };
 
+    console.log(category);
     try {
       const response = await fetch('http://localhost:3000/trucks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newTruck),
+        body: JSON.stringify({ ...newTruck }), // Create a shallow copy of newTruck
       });
+
       if (!response.ok) {
         throw new Error('Failed to add truck');
       }
@@ -150,6 +154,16 @@ export const AppContextProvider = ({ children }) => {
     setTrucks(updatedTrucks);
   };
 
+  const goToPreviousWeek = async () => {
+    await fetchData();
+    setSelectedWeek((prevOffset) => prevOffset - 1);
+  };
+
+  const goToNextWeek = async () => {
+    await fetchData();
+    setSelectedWeek((prevOffset) => prevOffset + 1);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -165,6 +179,10 @@ export const AppContextProvider = ({ children }) => {
         setInputsDisabled,
         handleToggleInputs,
         handleInputChange,
+        goToNextWeek,
+        goToPreviousWeek,
+        category,
+        setCategory,
       }}
     >
       {children}
