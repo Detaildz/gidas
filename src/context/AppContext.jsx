@@ -14,7 +14,7 @@ export const AppContextProvider = ({ children }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`${cfg.API.HOST}/trucks`);
+      const response = await fetch(`https://gidas-api.vercel.app/trucks/`);
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
