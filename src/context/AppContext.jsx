@@ -1,7 +1,6 @@
 import { createContext, useCallback, useState, useMemo } from 'react';
 import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
-import { cfg } from '../cfg/cfg.js';
 
 export const AppContext = createContext();
 
@@ -50,7 +49,7 @@ export const AppContextProvider = ({ children }) => {
   const saveChanges = async (updatedTruck) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/trucks/${updatedTruck.customId}`,
+        `https://gidas-api.vercel.app/trucks/${updatedTruck.customId}`,
         {
           method: 'PATCH',
           headers: {
@@ -84,7 +83,7 @@ export const AppContextProvider = ({ children }) => {
     if (window.confirm('Ar tikrai norite ištrinti vežėją?')) {
       try {
         const response = await fetch(
-          `http://localhost:3000/trucks/${customId}`,
+          `https://gidas-api.vercel.app/trucks/${customId}`,
           {
             method: 'DELETE',
           }
@@ -125,7 +124,7 @@ export const AppContextProvider = ({ children }) => {
 
     console.log(category);
     try {
-      const response = await fetch(`${cfg.API.HOST}/trucks`, {
+      const response = await fetch(`https://gidas-api.vercel.app/trucks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
