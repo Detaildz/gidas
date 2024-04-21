@@ -125,7 +125,7 @@ export const AppContextProvider = ({ children }) => {
 
     console.log(category);
     try {
-      const response = await fetch('http://localhost:3000/trucks', {
+      const response = await fetch(`${cfg.API.HOST}/trucks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
