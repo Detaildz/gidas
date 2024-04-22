@@ -36,16 +36,32 @@
     border-bottom: 1px solid #ddd;
   }
 
+  tr {
+    &:hover {
+      background-color: rgb(235, 231, 227);
+    }
+  }
+
   input {
     overflow: auto;
     resize: vertical;
     width: 100px;
   }
+
+  textarea {
+    resize: vertical;
+    width: 100px;
+    min-height: 20px;
+
+    overflow: auto;
+  }
+
   .change-input {
     width: 100px;
+    font-weight: bolder;
   }
   // !CHANGE Pakeist Spalva
   .with-input {
-    background-color: bisque;
+    background-color: rgb(255, 121, 3);
   }
 }

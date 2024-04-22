@@ -1,6 +1,13 @@
-import { createContext, useCallback, useState, useMemo } from 'react';
+import {
+  createContext,
+  useCallback,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react';
 import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
+import io from 'socket.io-client';
 
 export const AppContext = createContext();
 
@@ -10,6 +17,20 @@ export const AppContextProvider = ({ children }) => {
   const [selectedWeek, setSelectedWeek] = useState(thisWeek);
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
+
+  useEffect(() => {
+    const socket = io('https://gidas-api.vercel.app');
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+    socket.on('trucks', (data) => {
+      setTrucks(data);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const fetchData = useCallback(async () => {
     try {
