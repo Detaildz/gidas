@@ -7,7 +7,8 @@ import {
 } from 'react';
 import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
-
+import io from 'socket.io-client';
+import { cfg } from '../cfg/cfg';
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
@@ -16,6 +17,51 @@ export const AppContextProvider = ({ children }) => {
   const [selectedWeek, setSelectedWeek] = useState(thisWeek);
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io.connect(`ws://localhost:3000`);
+    setSocket(newSocket);
+
+    newSocket.emit('message', 'Hello, server!');
+
+    return () => {
+      console.log('disconnecting...');
+      newSocket.disconnect();
+    };
+  }, [setSocket]);
+
+  useEffect(() => {
+    if (!socket || !socket.connected) return;
+    socket.on('connect_error', (err) => {
+      console.log(`Websocket connect_error due to ${err.message}`, err);
+    });
+
+    socket.on('error', (error) => {
+      console.log('Websocket error', error);
+    });
+
+    return () => {
+      socket?.off('connect_error');
+      socket?.off('error');
+    };
+  }, [socket, socket?.connected]);
+
+  useEffect(() => {
+    if (!socket || !socket.connected) return;
+    socket.on('message', (data) => {
+      console.log('data', data);
+    });
+
+    socket.on('inputChange', (data) => {
+      console.log('data', data);
+      setTrucks(data);
+    });
+
+    return () => {
+      socket?.off('message');
+    };
+  }, [socket, socket?.connected]);
 
   useEffect(() => {
     (async () => {
@@ -29,7 +75,7 @@ export const AppContextProvider = ({ children }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:3000/trucks/`);
+      const response = await fetch(`${cfg.API.HOST}/trucks`);
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
@@ -68,7 +114,7 @@ export const AppContextProvider = ({ children }) => {
   const saveChanges = async (updatedTruck) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/trucks/${updatedTruck.customId}`,
+        `${cfg.API.HOST}/trucks/${updatedTruck.customId}`,
         {
           method: 'PATCH',
           headers: {
@@ -96,17 +142,15 @@ export const AppContextProvider = ({ children }) => {
       return truck;
     });
     setTrucks(updatedTrucks);
+    socket.emit('inputChange', updatedTrucks);
   };
 
   const deleteTruck = async (customId) => {
     if (window.confirm('Ar tikrai norite ištrinti vežėją?')) {
       try {
-        const response = await fetch(
-          `http://localhost:3000/trucks/${customId}`,
-          {
-            method: 'DELETE',
-          }
-        );
+        const response = await fetch(`${cfg.API.HOST}/trucks/${customId}`, {
+          method: 'DELETE',
+        });
         if (!response.ok) {
           throw new Error('Request failed');
         }
@@ -143,7 +187,7 @@ export const AppContextProvider = ({ children }) => {
 
     console.log(category);
     try {
-      const response = await fetch(`http://localhost:3000/trucks`, {
+      const response = await fetch(`${cfg.API.HOST}/trucks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -209,6 +253,7 @@ export const AppContextProvider = ({ children }) => {
         goToPreviousWeek,
         category,
         setCategory,
+        socket,
       }}
     >
       {children}

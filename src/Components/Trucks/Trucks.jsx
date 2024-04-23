@@ -8,7 +8,6 @@ import { AddTruck } from '../buttons/addTruck';
 const Trucks = ({ category }) => {
   const {
     selectedWeek,
-
     trucks,
     handleInputChange,
     deleteTruck,
