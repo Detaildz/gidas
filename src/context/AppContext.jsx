@@ -9,6 +9,7 @@ import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import { cfg } from '../cfg/cfg';
+
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
@@ -18,15 +19,14 @@ export const AppContextProvider = ({ children }) => {
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
   const [socket, setSocket] = useState(null);
-
+  const protocol = import.meta.env.PROD ? 'wss' : 'ws';
   useEffect(() => {
-    const newSocket = io.connect(`ws://${cfg.API.HOST}`);
+    const newSocket = io.connect(`${protocol}://${cfg.API.HOST}`);
     setSocket(newSocket);
 
     newSocket.emit('message', 'Hello, server!');
 
     return () => {
-      console.log('disconnecting...');
       newSocket.disconnect();
     };
   }, [setSocket]);
@@ -75,7 +75,7 @@ export const AppContextProvider = ({ children }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`http://${cfg.API.HOST}/trucks`);
+      const response = await fetch(`${protocol}://${cfg.API.HOST}/trucks`);
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
@@ -114,7 +114,7 @@ export const AppContextProvider = ({ children }) => {
   const saveChanges = async (updatedTruck) => {
     try {
       const response = await fetch(
-        `http://${cfg.API.HOST}/trucks/${updatedTruck.customId}`,
+        `${protocol}://${cfg.API.HOST}/trucks/${updatedTruck.customId}`,
         {
           method: 'PATCH',
           headers: {
@@ -149,7 +149,7 @@ export const AppContextProvider = ({ children }) => {
     if (window.confirm('Ar tikrai norite ištrinti vežėją?')) {
       try {
         const response = await fetch(
-          `http://${cfg.API.HOST}/trucks/${customId}`,
+          `${protocol}://${cfg.API.HOST}/trucks/${customId}`,
           {
             method: 'DELETE',
           }
@@ -190,7 +190,7 @@ export const AppContextProvider = ({ children }) => {
 
     console.log(category);
     try {
-      const response = await fetch(`http://${cfg.API.HOST}/trucks`, {
+      const response = await fetch(`${protocol}://${cfg.API.HOST}/trucks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
