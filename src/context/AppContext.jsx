@@ -7,7 +7,6 @@ import {
 } from 'react';
 import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
-import io from 'socket.io-client';
 
 export const AppContext = createContext();
 
@@ -19,28 +18,24 @@ export const AppContextProvider = ({ children }) => {
   const [category, setCategory] = useState('export');
 
   useEffect(() => {
-    const socket = io('https://gidas-api.vercel.app');
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
-    socket.on('trucks', (data) => {
-      setTrucks(data);
-    });
+    (async () => {
+      const data = await fetchData();
 
-    return () => {
-      socket.disconnect();
-    };
+      const dataByWeek = data.filter((truck) => truck.week === selectedWeek);
+
+      setTrucks(dataByWeek);
+    })();
   }, []);
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`https://gidas-api.vercel.app/trucks/`);
+      const response = await fetch(`http://localhost:3000/trucks/`);
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
       const data = await response.json();
-      const dataByWeek = data.filter((truck) => truck.week === selectedWeek);
-      setTrucks(dataByWeek);
+
+      return data;
     } catch (error) {
       console.error(error.message);
       throw new Error(error.message);
@@ -50,8 +45,11 @@ export const AppContextProvider = ({ children }) => {
   const handleWeekChange = async (e) => {
     const selectedWeek = parseInt(e.target.value);
 
+    const data = await fetchData();
+    const dataByWeek = data.filter((truck) => truck.week === selectedWeek);
+
+    setTrucks(dataByWeek);
     setSelectedWeek(selectedWeek);
-    await fetchData();
   };
 
   const weekOptions = useMemo(
@@ -70,7 +68,7 @@ export const AppContextProvider = ({ children }) => {
   const saveChanges = async (updatedTruck) => {
     try {
       const response = await fetch(
-        `https://gidas-api.vercel.app/trucks/${updatedTruck.customId}`,
+        `http://localhost:3000/trucks/${updatedTruck.customId}`,
         {
           method: 'PATCH',
           headers: {
@@ -104,7 +102,7 @@ export const AppContextProvider = ({ children }) => {
     if (window.confirm('Ar tikrai norite ištrinti vežėją?')) {
       try {
         const response = await fetch(
-          `https://gidas-api.vercel.app/trucks/${customId}`,
+          `http://localhost:3000/trucks/${customId}`,
           {
             method: 'DELETE',
           }
@@ -145,7 +143,7 @@ export const AppContextProvider = ({ children }) => {
 
     console.log(category);
     try {
-      const response = await fetch(`https://gidas-api.vercel.app/trucks`, {
+      const response = await fetch(`http://localhost:3000/trucks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -175,12 +173,20 @@ export const AppContextProvider = ({ children }) => {
   };
 
   const goToPreviousWeek = async () => {
-    await fetchData();
+    const currentWeek = selectedWeek - 1;
+    const data = await fetchData();
+    const dataByWeek = data.filter((truck) => truck.week === currentWeek);
+
+    setTrucks(dataByWeek);
     setSelectedWeek((prevOffset) => prevOffset - 1);
   };
 
   const goToNextWeek = async () => {
-    await fetchData();
+    const currentWeek = selectedWeek + 1;
+    const data = await fetchData();
+    const dataByWeek = data.filter((truck) => truck.week === currentWeek);
+
+    setTrucks(dataByWeek);
     setSelectedWeek((prevOffset) => prevOffset + 1);
   };
 

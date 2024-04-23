@@ -8,7 +8,7 @@ import { AddTruck } from '../buttons/addTruck';
 const Trucks = ({ category }) => {
   const {
     selectedWeek,
-    fetchData,
+
     trucks,
     handleInputChange,
     deleteTruck,
@@ -16,10 +16,6 @@ const Trucks = ({ category }) => {
   } = useContext(AppContext);
 
   const [weekDates, setWeekDates] = useState([]);
-
-  useEffect(() => {
-    fetchData();
-  }, [selectedWeek]);
 
   generateWeekDates(selectedWeek);
 
@@ -49,10 +45,7 @@ const Trucks = ({ category }) => {
           </thead>
           <tbody>
             {trucks
-              .filter(
-                (truck) =>
-                  truck.week === selectedWeek && truck.category === category
-              )
+              .filter((truck) => truck.category === category)
               .map(
                 ({
                   customId,
