@@ -21,7 +21,7 @@ export const AppContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io('wws://gidas-api.vercel.app/');
+    const newSocket = io('wss://gidas-api.vercel.app/');
     setSocket(newSocket);
 
     newSocket.emit('message', 'Hello, server!');
