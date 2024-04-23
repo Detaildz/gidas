@@ -20,7 +20,7 @@ export const AppContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io.connect(`ws://localhost:3000`);
+    const newSocket = io.connect(` ${cfg.API.HOST}`);
     setSocket(newSocket);
 
     newSocket.emit('message', 'Hello, server!');
