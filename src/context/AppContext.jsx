@@ -19,7 +19,6 @@ export const AppContextProvider = ({ children }) => {
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
   const [socket, setSocket] = useState(null);
-  const protocol = import.meta.env.PROD ? 'wss' : 'ws';
 
   useEffect(() => {
     const newSocket = io.connect(`wss://gidas-api.vercel.app`);
@@ -76,7 +75,7 @@ export const AppContextProvider = ({ children }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`${protocol}://${cfg.API.HOST}/trucks`);
+      const response = await fetch(`http://${cfg.API.HOST}/trucks`);
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
@@ -115,7 +114,7 @@ export const AppContextProvider = ({ children }) => {
   const saveChanges = async (updatedTruck) => {
     try {
       const response = await fetch(
-        `${protocol}://${cfg.API.HOST}/trucks/${updatedTruck.customId}`,
+        `http://${cfg.API.HOST}/trucks/${updatedTruck.customId}`,
         {
           method: 'PATCH',
           headers: {
@@ -150,7 +149,7 @@ export const AppContextProvider = ({ children }) => {
     if (window.confirm('Ar tikrai norite ištrinti vežėją?')) {
       try {
         const response = await fetch(
-          `${protocol}://${cfg.API.HOST}/trucks/${customId}`,
+          `http://${cfg.API.HOST}/trucks/${customId}`,
           {
             method: 'DELETE',
           }
@@ -191,7 +190,7 @@ export const AppContextProvider = ({ children }) => {
 
     console.log(category);
     try {
-      const response = await fetch(`${protocol}://${cfg.API.HOST}/trucks`, {
+      const response = await fetch(`http://${cfg.API.HOST}/trucks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
