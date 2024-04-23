@@ -20,7 +20,7 @@ export const AppContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io.connect(` ${cfg.API.HOST}`);
+    const newSocket = io.connect(`ws://${cfg.API.HOST}`);
     setSocket(newSocket);
 
     newSocket.emit('message', 'Hello, server!');
@@ -75,7 +75,7 @@ export const AppContextProvider = ({ children }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`${cfg.API.HOST}/trucks`);
+      const response = await fetch(`http://${cfg.API.HOST}/trucks`);
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
@@ -114,7 +114,7 @@ export const AppContextProvider = ({ children }) => {
   const saveChanges = async (updatedTruck) => {
     try {
       const response = await fetch(
-        `${cfg.API.HOST}/trucks/${updatedTruck.customId}`,
+        `http://${cfg.API.HOST}/trucks/${updatedTruck.customId}`,
         {
           method: 'PATCH',
           headers: {
@@ -148,9 +148,12 @@ export const AppContextProvider = ({ children }) => {
   const deleteTruck = async (customId) => {
     if (window.confirm('Ar tikrai norite ištrinti vežėją?')) {
       try {
-        const response = await fetch(`${cfg.API.HOST}/trucks/${customId}`, {
-          method: 'DELETE',
-        });
+        const response = await fetch(
+          `http://${cfg.API.HOST}/trucks/${customId}`,
+          {
+            method: 'DELETE',
+          }
+        );
         if (!response.ok) {
           throw new Error('Request failed');
         }
@@ -187,7 +190,7 @@ export const AppContextProvider = ({ children }) => {
 
     console.log(category);
     try {
-      const response = await fetch(`${cfg.API.HOST}/trucks`, {
+      const response = await fetch(`http://${cfg.API.HOST}/trucks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
