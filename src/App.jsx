@@ -12,6 +12,7 @@ const socket = io.connect('https://gidas-api.vercel.app', {
   timeout: 5000,
   reconnectionAttempts: Infinity,
   autoConnect: true,
+  withCredentials: true,
 });
 function App() {
   console.log(socket);
