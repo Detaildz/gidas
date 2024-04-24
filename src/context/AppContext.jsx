@@ -9,7 +9,15 @@ import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import { cfg } from '../cfg/cfg';
-const socket = io('https://gidas-api.vercel.app');
+const socket = io('https://gidas-api.vercel.app', {
+  secure: true,
+  transports: ['polling'],
+  reconnectionDelay: 500,
+  reconnection: true,
+  timeout: 5000,
+  reconnectionAttempts: Infinity,
+  autoConnect: true,
+});
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
@@ -34,38 +42,38 @@ export const AppContextProvider = ({ children }) => {
   //   };
   // }, [setSocket]);
 
-  useEffect(() => {
-    console.log(socket);
-    if (!socket || !socket.connected) return;
-    socket.on('connect_error', (err) => {
-      console.log(`Websocket connect_error due to ${err.message}`, err);
-    });
+  // useEffect(() => {
+  //   console.log(socket);
+  //   if (!socket || !socket.connected) return;
+  //   socket.on('connect_error', (err) => {
+  //     console.log(`Websocket connect_error due to ${err.message}`, err);
+  //   });
 
-    socket.on('error', (error) => {
-      console.log('Websocket error', error);
-    });
+  //   socket.on('error', (error) => {
+  //     console.log('Websocket error', error);
+  //   });
 
-    return () => {
-      socket?.off('connect_error');
-      socket?.off('error');
-    };
-  }, [socket, socket?.connected]);
+  //   return () => {
+  //     socket?.off('connect_error');
+  //     socket?.off('error');
+  //   };
+  // }, [socket, socket?.connected]);
 
-  useEffect(() => {
-    if (!socket || !socket.connected) return;
-    socket.on('message', (data) => {
-      console.log('data', data);
-    });
+  // useEffect(() => {
+  //   if (!socket || !socket.connected) return;
+  //   socket.on('message', (data) => {
+  //     console.log('data', data);
+  //   });
 
-    socket.on('inputChange', (data) => {
-      console.log('data', data);
-      setTrucks(data);
-    });
+  //   socket.on('inputChange', (data) => {
+  //     console.log('data', data);
+  //     setTrucks(data);
+  //   });
 
-    return () => {
-      socket?.off('message');
-    };
-  }, [socket, socket?.connected]);
+  //   return () => {
+  //     socket?.off('message');
+  //   };
+  // }, [socket, socket?.connected]);
 
   useEffect(() => {
     (async () => {
@@ -147,7 +155,7 @@ export const AppContextProvider = ({ children }) => {
       return truck;
     });
     setTrucks(updatedTrucks);
-    socket.emit('inputChange', updatedTrucks);
+    // socket.emit('inputChange', updatedTrucks);
   };
 
   const deleteTruck = async (customId) => {
