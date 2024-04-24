@@ -35,6 +35,7 @@ export const AppContextProvider = ({ children }) => {
   // }, [setSocket]);
 
   useEffect(() => {
+    console.log(socket);
     if (!socket || !socket.connected) return;
     socket.on('connect_error', (err) => {
       console.log(`Websocket connect_error due to ${err.message}`, err);
