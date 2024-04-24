@@ -265,7 +265,6 @@ export const AppContextProvider = ({ children }) => {
         goToPreviousWeek,
         category,
         setCategory,
-        socket,
       }}
     >
       {children}
