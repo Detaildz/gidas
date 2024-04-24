@@ -1,7 +1,7 @@
 export const cfg = {
   API: {
     HOST: import.meta.env.PROD
-      ? 'https://gidas-api.vercel.app'
+      ? 'https://master--mano-gidas.netlify.app/'
       : 'http://localhost:3000',
   },
 };
