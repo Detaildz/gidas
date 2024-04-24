@@ -19,15 +19,15 @@ export const AppContextProvider = ({ children }) => {
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
   const [socket, setSocket] = useState(null);
-  const protocol = import.meta.env.PROD ? 'wss://' : 'ws://';
-  const baseUrl = import.meta.env.PROD
-    ? 'gidas-api.vercel.app'
-    : 'localhost:3000';
+  // const protocol = import.meta.env.PROD ? 'wss://' : 'ws://';
+  // const baseUrl = import.meta.env.PROD
+  //   ? 'gidas-api.vercel.app'
+  //   : 'localhost:3000';
 
   useEffect(() => {
-    const newSocket = io(`${protocol}${baseUrl}`);
+    const newSocket = io('https://gidas-api.vercel.app');
     setSocket(newSocket);
-    console.log(`${protocol}${baseUrl}`);
+
     newSocket.emit('message', 'Hello, server!');
 
     return () => {
