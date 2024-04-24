@@ -19,9 +19,13 @@ export const AppContextProvider = ({ children }) => {
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
   const [socket, setSocket] = useState(null);
+  const protocol = import.meta.env.PROD ? 'wss://' : 'ws://';
+  const baseUrl = import.meta.env.PROD
+    ? 'gidas-api.vercel.app'
+    : 'localhost:3000';
 
   useEffect(() => {
-    const newSocket = io('wss://gidas-api.vercel.app/');
+    const newSocket = io(`${protocol}${baseUrl}/`);
     setSocket(newSocket);
 
     newSocket.emit('message', 'Hello, server!');
@@ -76,6 +80,7 @@ export const AppContextProvider = ({ children }) => {
   const fetchData = useCallback(async () => {
     try {
       const response = await fetch(`${cfg.API.HOST}/trucks`);
+      console.log(cfg.API.HOST);
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
@@ -185,7 +190,6 @@ export const AppContextProvider = ({ children }) => {
       inputsDisabled: true,
     };
 
-    console.log(category);
     try {
       const response = await fetch(`${cfg.API.HOST}/trucks`, {
         method: 'POST',
