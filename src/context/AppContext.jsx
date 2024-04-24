@@ -9,15 +9,7 @@ import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
 // import io from 'socket.io-client';
 import { cfg } from '../cfg/cfg';
-// const socket = io('https://gidas-api.vercel.app', {
-//   secure: true,
-//   transports: ['polling'],
-//   reconnectionDelay: 500,
-//   reconnection: true,
-//   timeout: 5000,
-//   reconnectionAttempts: Infinity,
-//   autoConnect: true,
-// });
+// const socket = io('http://localhost:3000');
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
