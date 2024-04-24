@@ -7,9 +7,9 @@ import {
 } from 'react';
 import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 import { cfg } from '../cfg/cfg';
-// const socket = io('http://localhost:3000');
+
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
@@ -18,54 +18,54 @@ export const AppContextProvider = ({ children }) => {
   const [selectedWeek, setSelectedWeek] = useState(thisWeek);
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
-  // const [socket, setSocket] = useState(null);
-  // const protocol = import.meta.env.PROD ? 'wss://' : 'ws://';
-  // const baseUrl = import.meta.env.PROD
-  //   ? 'gidas-api.vercel.app'
-  //   : 'localhost:3000';
+  const [socket, setSocket] = useState(null);
+  const protocol = import.meta.env.PROD ? 'wss://' : 'ws://';
+  const baseUrl = import.meta.env.PROD
+    ? 'gidas-api.vercel.app'
+    : 'localhost:3000';
 
-  // useEffect(() => {
-  //   setSocket(newSocket);
+  useEffect(() => {
+    const newSocket = io(`${protocol}${baseUrl}/`);
+    setSocket(newSocket);
 
-  //   newSocket.emit('message', 'Hello, server!');
+    newSocket.emit('message', 'Hello, server!');
 
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, [setSocket]);
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [setSocket]);
 
-  // useEffect(() => {
-  //   console.log(socket);
-  //   if (!socket || !socket.connected) return;
-  //   socket.on('connect_error', (err) => {
-  //     console.log(`Websocket connect_error due to ${err.message}`, err);
-  //   });
+  useEffect(() => {
+    if (!socket || !socket.connected) return;
+    socket.on('connect_error', (err) => {
+      console.log(`Websocket connect_error due to ${err.message}`, err);
+    });
 
-  //   socket.on('error', (error) => {
-  //     console.log('Websocket error', error);
-  //   });
+    socket.on('error', (error) => {
+      console.log('Websocket error', error);
+    });
 
-  //   return () => {
-  //     socket?.off('connect_error');
-  //     socket?.off('error');
-  //   };
-  // }, [socket, socket?.connected]);
+    return () => {
+      socket?.off('connect_error');
+      socket?.off('error');
+    };
+  }, [socket, socket?.connected]);
 
-  // useEffect(() => {
-  //   if (!socket || !socket.connected) return;
-  //   socket.on('message', (data) => {
-  //     console.log('data', data);
-  //   });
+  useEffect(() => {
+    if (!socket || !socket.connected) return;
+    socket.on('message', (data) => {
+      console.log('data', data);
+    });
 
-  //   socket.on('inputChange', (data) => {
-  //     console.log('data', data);
-  //     setTrucks(data);
-  //   });
+    socket.on('inputChange', (data) => {
+      console.log('data', data);
+      setTrucks(data);
+    });
 
-  //   return () => {
-  //     socket?.off('message');
-  //   };
-  // }, [socket, socket?.connected]);
+    return () => {
+      socket?.off('message');
+    };
+  }, [socket, socket?.connected]);
 
   useEffect(() => {
     (async () => {
@@ -147,7 +147,7 @@ export const AppContextProvider = ({ children }) => {
       return truck;
     });
     setTrucks(updatedTrucks);
-    // socket.emit('inputChange', updatedTrucks);
+    socket.emit('inputChange', updatedTrucks);
   };
 
   const deleteTruck = async (customId) => {
@@ -257,6 +257,7 @@ export const AppContextProvider = ({ children }) => {
         goToPreviousWeek,
         category,
         setCategory,
+        socket,
       }}
     >
       {children}
