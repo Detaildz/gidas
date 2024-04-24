@@ -9,7 +9,7 @@ import { getWeekNumber } from '../helpers/sortWeekHelper';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import { cfg } from '../cfg/cfg';
-
+const socket = io('https://gidas-api.vercel.app');
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
@@ -18,22 +18,21 @@ export const AppContextProvider = ({ children }) => {
   const [selectedWeek, setSelectedWeek] = useState(thisWeek);
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
-  const [socket, setSocket] = useState(null);
+  // const [socket, setSocket] = useState(null);
   // const protocol = import.meta.env.PROD ? 'wss://' : 'ws://';
   // const baseUrl = import.meta.env.PROD
   //   ? 'gidas-api.vercel.app'
   //   : 'localhost:3000';
 
-  useEffect(() => {
-    const newSocket = io('https://gidas-api.vercel.app');
-    setSocket(newSocket);
+  // useEffect(() => {
+  //   setSocket(newSocket);
 
-    newSocket.emit('message', 'Hello, server!');
+  //   newSocket.emit('message', 'Hello, server!');
 
-    return () => {
-      newSocket.disconnect();
-    };
-  }, [setSocket]);
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, [setSocket]);
 
   useEffect(() => {
     if (!socket || !socket.connected) return;
