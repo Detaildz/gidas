@@ -25,8 +25,9 @@ export const AppContextProvider = ({ children }) => {
     : 'localhost:3000';
 
   useEffect(() => {
-    const newSocket = io(`${protocol}${baseUrl}/`);
+    const newSocket = io(`${protocol}${baseUrl}`);
     setSocket(newSocket);
+    console.log(`connecting to ${protocol}${baseUrl}`);
 
     newSocket.emit('message', 'Hello, server!');
 
