@@ -18,55 +18,6 @@ export const AppContextProvider = ({ children }) => {
   const [selectedWeek, setSelectedWeek] = useState(thisWeek);
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [category, setCategory] = useState('export');
-  // const [socket, setSocket] = useState(null);
-  // const protocol = import.meta.env.PROD ? 'wss://' : 'ws://';
-  // const baseUrl = import.meta.env.PROD
-  //   ? 'gidas-api.vercel.app'
-  //   : 'localhost:3000';
-
-  // useEffect(() => {
-  //   const newSocket = io(`${protocol}${baseUrl}`);
-  //   setSocket(newSocket);
-  //   console.log(`connecting to ${protocol}${baseUrl}`);
-
-  //   newSocket.emit('message', 'Hello, server!');
-
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, [setSocket]);
-
-  // useEffect(() => {
-  //   if (!socket || !socket.connected) return;
-  //   socket.on('connect_error', (err) => {
-  //     console.log(`Websocket connect_error due to ${err.message}`, err);
-  //   });
-
-  //   socket.on('error', (error) => {
-  //     console.log('Websocket error', error);
-  //   });
-
-  //   return () => {
-  //     socket?.off('connect_error');
-  //     socket?.off('error');
-  //   };
-  // }, [socket, socket?.connected]);
-
-  // useEffect(() => {
-  //   if (!socket || !socket.connected) return;
-  //   socket.on('message', (data) => {
-  //     console.log('data', data);
-  //   });
-
-  //   socket.on('inputChange', (data) => {
-  //     console.log('data', data);
-  //     setTrucks(data);
-  //   });
-
-  //   return () => {
-  //     socket?.off('message');
-  //   };
-  // }, [socket, socket?.connected]);
 
   useEffect(() => {
     (async () => {
@@ -81,7 +32,7 @@ export const AppContextProvider = ({ children }) => {
   const fetchData = useCallback(async () => {
     try {
       const response = await fetch(`${cfg.API.HOST}/trucks`);
-      console.log(cfg.API.HOST);
+
       if (!response.ok) {
         throw new Error('Failed to fetch trucks');
       }
@@ -148,7 +99,6 @@ export const AppContextProvider = ({ children }) => {
       return truck;
     });
     setTrucks(updatedTrucks);
-    // socket.emit('inputChange', updatedTrucks);
   };
 
   const deleteTruck = async (customId) => {
@@ -235,6 +185,9 @@ export const AppContextProvider = ({ children }) => {
     const data = await fetchData();
     const dataByWeek = data.filter((truck) => truck.week === currentWeek);
 
+    console.log(selectedWeek);
+    console.log(thisWeek + 1);
+
     setTrucks(dataByWeek);
     setSelectedWeek((prevOffset) => prevOffset + 1);
   };
@@ -258,7 +211,6 @@ export const AppContextProvider = ({ children }) => {
         goToPreviousWeek,
         category,
         setCategory,
-        socket,
       }}
     >
       {children}
