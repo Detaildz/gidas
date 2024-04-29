@@ -11,18 +11,29 @@ export const ChangeWeek = () => {
     weekOptions,
     goToNextWeek,
     goToPreviousWeek,
+    addTrucksFromLastWeek,
+    trucks,
   } = useContext(AppContext);
+
+  const showAddTrucksButton = trucks.length === 0;
+
   return (
     <div>
       <div className="active-buttons">
         <div className="week-buttons">
-          <button onClick={goToNextWeek} className="week-button">
-            <FontAwesomeIcon icon={faCaretLeft} />
-            Next Week {selectedWeek + 1}
+          {showAddTrucksButton && (
+            <button onClick={() => addTrucksFromLastWeek()}>
+              Add trucks from last week
+            </button>
+          )}
+
+          <button onClick={goToPreviousWeek} className="week-button">
+            <FontAwesomeIcon icon={faCaretLeft} /> Previous Week{' '}
+            {selectedWeek - 1}
           </button>
           <span className="selected-week">WEEK{selectedWeek}</span>
-          <button onClick={goToPreviousWeek} className="week-button">
-            Previous Week {selectedWeek - 1}
+          <button onClick={goToNextWeek} className="week-button">
+            Next Week {selectedWeek + 1}
             <FontAwesomeIcon icon={faCaretRight} />
           </button>
           <select

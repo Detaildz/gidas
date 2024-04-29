@@ -17,12 +17,12 @@ export const AppContextProvider = ({ children }) => {
   const thisWeek = getWeekNumber(new Date());
   const [selectedWeek, setSelectedWeek] = useState(thisWeek);
   const [inputsDisabled, setInputsDisabled] = useState(false);
-  const [category, setCategory] = useState('export');
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     (async () => {
       const data = await fetchData();
-
+      console.log('data', data);
       const dataByWeek = data.filter((truck) => truck.week === selectedWeek);
 
       setTrucks(dataByWeek);
@@ -120,24 +120,12 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  const handleAddTruck = async (category) => {
-    const timestamp = Date.now(); // Current timestamp in milliseconds
-    const randomNumber = Math.floor(Math.random() * 1000); // Generates a random number between 0 and 999
-    const customId = selectedWeek + `${timestamp}${randomNumber}`;
+  const handleAddTruck = async (category, truckData) => {
     const newTruck = {
-      customId: customId,
+      customId: generateCustomId(),
       week: selectedWeek,
       category: category,
-      carrier: '',
-      truckNumber: '',
-      price: '',
-      monday: '',
-      tuesday: '',
-      wednesday: '',
-      thursday: '',
-      friday: '',
-      saturday: '',
-      sunday: '',
+      ...truckData, // Spread the truck data into the new truck object
       inputsDisabled: true,
     };
 
@@ -185,13 +173,34 @@ export const AppContextProvider = ({ children }) => {
     const data = await fetchData();
     const dataByWeek = data.filter((truck) => truck.week === currentWeek);
 
-    console.log(selectedWeek);
-    console.log(thisWeek + 1);
-
     setTrucks(dataByWeek);
     setSelectedWeek((prevOffset) => prevOffset + 1);
   };
 
+  const generateCustomId = () => {
+    const timestamp = Date.now();
+    const randomNumber = Math.floor(Math.random() * 1000);
+    return selectedWeek + `${timestamp}${randomNumber}`;
+  };
+
+  const addTrucksFromLastWeek = async () => {
+    const data = await fetchData();
+    const dataByWeek = data.filter((truck) => truck.week === selectedWeek - 1);
+
+    // check if selected week is empty
+    console.log('dataByWeek', dataByWeek);
+    if (trucks.length === 0) {
+      for (let i = 0; i < dataByWeek.length; i++) {
+        const { category, carrier, truckNumber, price } = dataByWeek[i];
+        handleAddTruck(category, {
+          carrier,
+          truckNumber,
+          price,
+        });
+        console.log('added truck', dataByWeek[i]);
+      }
+    }
+  };
   return (
     <AppContext.Provider
       value={{
@@ -211,6 +220,7 @@ export const AppContextProvider = ({ children }) => {
         goToPreviousWeek,
         category,
         setCategory,
+        addTrucksFromLastWeek,
       }}
     >
       {children}

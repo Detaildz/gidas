@@ -11,13 +11,12 @@ export const AddTruck = ({ category }) => {
   const { handleAddTruck } = useContext(AppContext);
 
   const handleClick = () => {
-    console.log('Current category:', category);
     handleAddTruck(category);
   };
 
   return (
     <button onClick={handleClick} className="add-truck">
-      Add Truck
+      +
       <FontAwesomeIcon icon={faTruck} />
     </button>
   );

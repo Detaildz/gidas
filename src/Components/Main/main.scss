@@ -1,5 +1,5 @@
 .main-container {
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -8,16 +8,22 @@
   gap: 2rem;
 
   .header {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
   }
 
   .trucks-container {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 2rem;
+    gap: 0.5rem;
+  }
+
+  .category {
+    font-weight: bold;
+    font-size: 1.5rem;
+    justify-self: start;
   }
 }

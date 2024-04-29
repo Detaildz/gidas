@@ -18,12 +18,6 @@
     }
   }
 
-  .add-truck {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
   .week-button {
     margin-left: 5px;
   }
@@ -78,5 +72,17 @@
     font-size: 1.4rem;
     color: rgb(52, 52, 156);
     margin: 0 1rem;
+  }
+}
+
+.add-truck {
+  background: none;
+  color: white;
+  border: 1px solid white;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }

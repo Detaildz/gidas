@@ -50,18 +50,31 @@
 
   textarea {
     resize: vertical;
-    width: 100px;
+    max-width: 100px;
     min-height: 20px;
 
     overflow: auto;
   }
 
   .change-input {
-    width: 100px;
+    max-width: 100px;
     font-weight: bolder;
   }
   // !CHANGE Pakeist Spalva
   .with-input {
-    background-color: rgb(255, 121, 3);
+    background-color: rgb(35, 91, 232);
+    color: rgb(234, 255, 0);
+
+    &:hover {
+      background-color: rgb(7, 11, 66);
+      color: white;
+    }
   }
+}
+
+.add-truck-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }

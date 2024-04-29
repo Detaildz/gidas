@@ -31,7 +31,7 @@ const Trucks = ({ category }) => {
         <table className="truckTable">
           <thead>
             <tr>
-              <th>
+              <th className="add-truck-block">
                 <AddTruck category={category}></AddTruck>
               </th>
               <th>Carrier</th>
@@ -73,7 +73,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={carrier}
+                          value={carrier || ''}
                           disabled={inputsDisabled}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'carrier')
@@ -85,7 +85,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={truckNumber}
+                          value={truckNumber || ''}
                           disabled={inputsDisabled}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'truckNumber')
@@ -97,7 +97,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={price}
+                          value={price || ''}
                           disabled={inputsDisabled}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'price')
@@ -109,7 +109,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={monday}
+                          value={monday || ''}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'monday')
                           }
@@ -119,7 +119,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={tuesday}
+                          value={tuesday || ''}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'tuesday')
                           }
@@ -129,7 +129,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={wednesday}
+                          value={wednesday || ''}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'wednesday')
                           }
@@ -139,7 +139,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={thursday}
+                          value={thursday || ''}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'thursday')
                           }
@@ -149,7 +149,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={friday}
+                          value={friday || ''}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'friday')
                           }
@@ -159,7 +159,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={saturday}
+                          value={saturday || ''}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'saturday')
                           }
@@ -169,7 +169,7 @@ const Trucks = ({ category }) => {
                       <td>
                         <input
                           key={customId}
-                          value={sunday}
+                          value={sunday || ''}
                           onChange={(e) =>
                             handleInputChange(e, customId, 'sunday')
                           }

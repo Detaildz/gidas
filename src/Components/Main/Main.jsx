@@ -10,9 +10,9 @@ function Main() {
         <ChangeWeek></ChangeWeek>
       </div>
       <div className="trucks-container">
-        <h1>IMPORT</h1>
+        <p className="category">IMPORT</p>
         <Trucks category="import"></Trucks>
-        <h1>EXPORT</h1>
+        <p className="category">EXPORT</p>
         <Trucks category="export"></Trucks>
       </div>
     </div>
