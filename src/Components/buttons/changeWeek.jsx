@@ -21,12 +21,6 @@ export const ChangeWeek = () => {
     <div>
       <div className="active-buttons">
         <div className="week-buttons">
-          {showAddTrucksButton && (
-            <button onClick={() => addTrucksFromLastWeek()}>
-              Add trucks from last week
-            </button>
-          )}
-
           <button onClick={goToPreviousWeek} className="week-button">
             <FontAwesomeIcon icon={faCaretLeft} /> Previous Week{' '}
             {selectedWeek - 1}
@@ -43,6 +37,11 @@ export const ChangeWeek = () => {
           >
             {weekOptions}
           </select>
+          {showAddTrucksButton && (
+            <button onClick={() => addTrucksFromLastWeek()}>
+              Add trucks from last week
+            </button>
+          )}
         </div>
       </div>
       <div className="truck-direction"></div>

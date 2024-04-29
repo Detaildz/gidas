@@ -23,173 +23,196 @@ const Trucks = ({ category }) => {
     setWeekDates(dates);
   }, [selectedWeek]);
 
+  const handleTextareaInput = (e) => {
+    e.target.style.height = 'auto'; // Reset height to auto to properly calculate the scroll height
+    e.target.style.height = `${e.target.scrollHeight}px`; // Set the height to match the content
+    localStorage.setItem('textareaHeight', e.target.style.height); // Store the height in local storage
+  };
+
+  useEffect(() => {
+    const savedHeight = localStorage.getItem('textareaHeight');
+    if (savedHeight) {
+      const textareas = document.querySelectorAll('.change-input');
+      textareas.forEach((textarea) => {
+        textarea.style.height = savedHeight;
+      });
+    }
+  }, []);
   return (
     <>
       <div
         className={`tableContainer ${category === 'import' ? 'import-table' : 'export-table'}`}
       >
-        <table className="truckTable">
-          <thead>
-            <tr>
-              <th className="add-truck-block">
-                <AddTruck category={category}></AddTruck>
-              </th>
-              <th>Carrier</th>
-              <th>Truck</th>
-              <th>Price</th>
-              {weekDates.map((date) => (
-                <th key={date}>{date}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {trucks
-              .filter((truck) => truck.category === category)
-              .map(
-                ({
-                  customId,
-                  carrier,
-                  truckNumber,
-                  price,
-                  inputsDisabled,
-                  monday,
-                  tuesday,
-                  wednesday,
-                  thursday,
-                  friday,
-                  saturday,
-                  sunday,
-                }) => {
-                  return (
-                    <tr key={customId}>
-                      <td>
-                        <button
-                          onClick={() => handleToggleInputs(customId)}
-                          className="change-button"
-                        >
-                          Pakeisti
-                        </button>
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={carrier || ''}
-                          disabled={inputsDisabled}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'carrier')
-                          }
-                          className="change-input"
-                          placeholder="Vežėjas"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={truckNumber || ''}
-                          disabled={inputsDisabled}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'truckNumber')
-                          }
-                          className="change-input"
-                          placeholder="A/M"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={price || ''}
-                          disabled={inputsDisabled}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'price')
-                          }
-                          className="change-input"
-                          placeholder="Kaina"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={monday || ''}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'monday')
-                          }
-                          className={`change-input ${monday ? 'with-input' : ''}`}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={tuesday || ''}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'tuesday')
-                          }
-                          className={`change-input ${tuesday ? 'with-input' : ''}`}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={wednesday || ''}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'wednesday')
-                          }
-                          className={`change-input ${wednesday ? 'with-input' : ''}`}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={thursday || ''}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'thursday')
-                          }
-                          className={`change-input ${thursday ? 'with-input' : ''}`}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={friday || ''}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'friday')
-                          }
-                          className={`change-input ${friday ? 'with-input' : ''}`}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={saturday || ''}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'saturday')
-                          }
-                          className={`change-input ${saturday ? 'with-input' : ''}`}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          key={customId}
-                          value={sunday || ''}
-                          onChange={(e) =>
-                            handleInputChange(e, customId, 'sunday')
-                          }
-                          className={`change-input ${sunday ? 'with-input' : ''}`}
-                        />
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => deleteTruck(customId)}
-                          className="delete-button"
-                        >
-                          x
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                }
-              )}
-          </tbody>
-        </table>
+        <div className="tableWrapper">
+          <table className="truckTable">
+            <thead>
+              <tr>
+                <th className="add-truck-block">
+                  <AddTruck category={category}></AddTruck>
+                </th>
+                <th>Carrier</th>
+                <th>Truck</th>
+                <th>Price</th>
+                {weekDates.map((date) => (
+                  <th key={date}>{date}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {trucks
+                .filter((truck) => truck.category === category)
+                .map(
+                  ({
+                    customId,
+                    carrier,
+                    truckNumber,
+                    price,
+                    inputsDisabled,
+                    monday,
+                    tuesday,
+                    wednesday,
+                    thursday,
+                    friday,
+                    saturday,
+                    sunday,
+                  }) => {
+                    return (
+                      <tr key={customId}>
+                        <td>
+                          <button
+                            onClick={() => handleToggleInputs(customId)}
+                            className="change-button"
+                          >
+                            Pakeisti
+                          </button>
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={carrier || ''}
+                            disabled={inputsDisabled}
+                            onFocus={(e) => {
+                              // Apply the stored height when the textarea is focused
+                              e.target.style.height =
+                                localStorage.getItem('textareaHeight');
+                            }}
+                            onChange={(e) => {
+                              handleTextareaInput(e); // Call function to adjust height
+                              handleInputChange(e, customId, 'carrier'); // Handle input change
+                            }}
+                            className="change-input"
+                            placeholder="Vežėjas"
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={truckNumber || ''}
+                            disabled={inputsDisabled}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'truckNumber')
+                            }
+                            className="change-input"
+                            placeholder="A/M"
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={price || ''}
+                            disabled={inputsDisabled}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'price')
+                            }
+                            className="change-input"
+                            placeholder="Kaina"
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={monday || ''}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'monday')
+                            }
+                            className={`change-input ${monday ? 'with-input' : ''}`}
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={tuesday || ''}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'tuesday')
+                            }
+                            className={`change-input ${tuesday ? 'with-input' : ''}`}
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={wednesday || ''}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'wednesday')
+                            }
+                            className={`change-input ${wednesday ? 'with-input' : ''}`}
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={thursday || ''}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'thursday')
+                            }
+                            className={`change-input ${thursday ? 'with-input' : ''}`}
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={friday || ''}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'friday')
+                            }
+                            className={`change-input ${friday ? 'with-input' : ''}`}
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={saturday || ''}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'saturday')
+                            }
+                            className={`change-input ${saturday ? 'with-input' : ''}`}
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            key={customId}
+                            value={sunday || ''}
+                            onChange={(e) =>
+                              handleInputChange(e, customId, 'sunday')
+                            }
+                            className={`change-input ${sunday ? 'with-input' : ''}`}
+                          />
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => deleteTruck(customId)}
+                            className="delete-button"
+                          >
+                            x
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

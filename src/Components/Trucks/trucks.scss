@@ -4,7 +4,6 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-
   width: 100%;
 
   .header {
@@ -15,7 +14,6 @@
     h1 {
       font-weight: bold;
       font-size: 2rem;
-
       color: rgb(52, 52, 156);
     }
   }
@@ -24,7 +22,8 @@
 .truckTable {
   margin: 1rem auto;
   border-collapse: collapse;
-
+  width: 100%;
+  max-width: 100%;
   th {
     background-color: rgb(52, 52, 156);
     color: white;
@@ -34,6 +33,7 @@
     padding: 0.5rem;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    font-size: 0.9rem;
   }
 
   tr {
@@ -42,25 +42,21 @@
     }
   }
 
-  input {
-    overflow: auto;
-    resize: vertical;
-    width: 100px;
-  }
-
   textarea {
-    resize: vertical;
-    max-width: 100px;
-    min-height: 20px;
-
-    overflow: auto;
+    width: 100%;
+    max-width: 120px; // Adjust as needed
+    height: 100%;
+    min-height: 1em; // Use line-height of input
+    font-size: 0.9rem;
+    resize: vertical; // Disable resizing by the user
+    overflow-y: auto; // Enable vertical scrolling
   }
 
   .change-input {
     max-width: 100px;
     font-weight: bolder;
   }
-  // !CHANGE Pakeist Spalva
+
   .with-input {
     background-color: rgb(35, 91, 232);
     color: rgb(234, 255, 0);
@@ -74,7 +70,47 @@
 
 .add-truck-block {
   display: flex;
+
   justify-content: center;
   align-items: center;
   gap: 1rem;
 }
+
+.tableWrapper {
+  max-width: 100%;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+// @media screen and (max-width: 900px) {
+//   .truckTable {
+//     overflow-x: auto;
+//     display: block;
+//   }
+
+//   .truckTable thead,
+//   .truckTable tbody,
+//   .truckTable th,
+//   .truckTable td,
+//   .truckTable tr {
+//     display: block;
+//   }
+
+//   .truckTable tbody tr {
+//     display: flex;
+//     flex-wrap: wrap;
+//     width: auto;
+//   }
+
+//   .truckTable thead {
+//     display: flex;
+//     flex-wrap: wrap;
+//   }
+
+//   .truckTable td,
+//   .truckTable th {
+//     flex-grow: 1;
+//     flex-basis: 100%;
+//     text-align: left;
+//   }
+// }
