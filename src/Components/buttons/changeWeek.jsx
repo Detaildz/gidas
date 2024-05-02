@@ -13,9 +13,11 @@ export const ChangeWeek = () => {
     goToPreviousWeek,
     addTrucksFromLastWeek,
     trucks,
+    thisWeek,
   } = useContext(AppContext);
 
-  const showAddTrucksButton = trucks.length === 0;
+  const showAddTrucksButton =
+    trucks.length === 0 && selectedWeek === thisWeek + 1;
 
   return (
     <div>
@@ -37,6 +39,7 @@ export const ChangeWeek = () => {
           >
             {weekOptions}
           </select>
+
           {showAddTrucksButton && (
             <button onClick={() => addTrucksFromLastWeek()}>
               Add trucks from last week

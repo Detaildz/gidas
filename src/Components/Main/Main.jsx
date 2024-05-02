@@ -1,19 +1,36 @@
-import Trucks from '../Trucks/Trucks';
-import { ChangeWeek } from '../buttons/changeWeek';
+import Austria from '../Countries/Austria';
+import Germany from '../Countries/Germany';
+
+import { AppContext } from '../../context/AppContext';
+import { useContext } from 'react';
 
 import './main.scss';
+import austriaflag from '../../assets/austriaflag.png';
+import germanyflag from '../../assets/germanyflag.png';
 
 function Main() {
+  const { country, handleCountryChange } = useContext(AppContext);
+
   return (
     <div className="main-container">
-      <div className="header">
-        <ChangeWeek></ChangeWeek>
+      <div className="countrySelect">
+        <img
+          className={country === 'Austria' ? 'selectedFlag' : 'otherFlag'}
+          src={austriaflag}
+          alt="austria"
+          onClick={() => handleCountryChange('Austria')}
+        />
+        <img
+          className={country === 'Germany' ? 'selectedFlag' : 'otherFlag'}
+          src={germanyflag}
+          alt="germany"
+          onClick={() => handleCountryChange('Germany')}
+        />
       </div>
+
       <div className="trucks-container">
-        <p className="category">IMPORT</p>
-        <Trucks category="import"></Trucks>
-        <p className="category">EXPORT</p>
-        <Trucks category="export"></Trucks>
+        {country === 'Austria' && <Austria country="Austria" />}
+        {country === 'Germany' && <Germany country="Germany" />}
       </div>
     </div>
   );

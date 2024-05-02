@@ -4,6 +4,9 @@ import { AppContext } from '../../context/AppContext';
 import PropTypes from 'prop-types';
 import './trucks.scss';
 import { AddTruck } from '../buttons/addTruck';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faToggleOff } from '@fortawesome/free-solid-svg-icons';
+import { faToggleOn } from '@fortawesome/free-solid-svg-icons';
 
 const Trucks = ({ category }) => {
   const {
@@ -16,28 +19,22 @@ const Trucks = ({ category }) => {
 
   const [weekDates, setWeekDates] = useState([]);
 
+  const { country } = useContext(AppContext);
+
   generateWeekDates(selectedWeek);
 
   useEffect(() => {
     const dates = generateWeekDates(selectedWeek);
     setWeekDates(dates);
+    console.log(dates);
   }, [selectedWeek]);
 
   const handleTextareaInput = (e) => {
-    e.target.style.height = 'auto'; // Reset height to auto to properly calculate the scroll height
-    e.target.style.height = `${e.target.scrollHeight}px`; // Set the height to match the content
-    localStorage.setItem('textareaHeight', e.target.style.height); // Store the height in local storage
+    e.target.style.height = 'auto';
+    e.target.style.height = `${e.target.scrollHeight}px`;
+    localStorage.setItem('textareaHeight', e.target.style.height);
   };
 
-  useEffect(() => {
-    const savedHeight = localStorage.getItem('textareaHeight');
-    if (savedHeight) {
-      const textareas = document.querySelectorAll('.change-input');
-      textareas.forEach((textarea) => {
-        textarea.style.height = savedHeight;
-      });
-    }
-  }, []);
   return (
     <>
       <div
@@ -48,7 +45,7 @@ const Trucks = ({ category }) => {
             <thead>
               <tr>
                 <th className="add-truck-block">
-                  <AddTruck category={category}></AddTruck>
+                  <AddTruck category={category} country={country}></AddTruck>
                 </th>
                 <th>Carrier</th>
                 <th>Truck</th>
@@ -60,7 +57,10 @@ const Trucks = ({ category }) => {
             </thead>
             <tbody>
               {trucks
-                .filter((truck) => truck.category === category)
+                .filter(
+                  (truck) =>
+                    truck.category === category && truck.country === country
+                )
                 .map(
                   ({
                     customId,
@@ -83,7 +83,11 @@ const Trucks = ({ category }) => {
                             onClick={() => handleToggleInputs(customId)}
                             className="change-button"
                           >
-                            Pakeisti
+                            {inputsDisabled ? (
+                              <FontAwesomeIcon icon={faToggleOff} />
+                            ) : (
+                              <FontAwesomeIcon icon={faToggleOn} />
+                            )}
                           </button>
                         </td>
                         <td>
@@ -220,6 +224,7 @@ const Trucks = ({ category }) => {
 
 Trucks.propTypes = {
   category: PropTypes.oneOf(['import', 'export']).isRequired,
+  country: PropTypes.string.isRequired,
 };
 
 export default Trucks;

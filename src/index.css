@@ -1,1 +1,10 @@
-@import './Components/buttons/button.scss';
+.App {
+  background: var(--background-color);
+  background: var(--background-gradient);
+  color: var(--text-color);
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-position: bottom;
+
+  background-size: cover;
+}

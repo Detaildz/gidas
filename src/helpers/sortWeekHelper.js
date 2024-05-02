@@ -15,7 +15,7 @@ export const generateWeekDates = (weekNumber) => {
 
     const formattedDate = day
       .toLocaleDateString('en-LT', {
-        weekday: 'long',
+        weekday: 'short',
         month: '2-digit',
         day: '2-digit',
       })

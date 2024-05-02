@@ -14,7 +14,7 @@
     h1 {
       font-weight: bold;
       font-size: 2rem;
-      color: rgb(52, 52, 156);
+      color: var(--main-color);
     }
   }
 }
@@ -25,7 +25,7 @@
   width: 100%;
   max-width: 100%;
   th {
-    background-color: rgb(52, 52, 156);
+    background-color: var(--main-color);
     color: white;
   }
   th,
@@ -38,18 +38,18 @@
 
   tr {
     &:hover {
-      background-color: rgb(235, 231, 227);
+      background-color: var(--table-row-color);
     }
   }
 
   textarea {
     width: 100%;
-    max-width: 120px; // Adjust as needed
+    max-width: 120px;
     height: 100%;
-    min-height: 1em; // Use line-height of input
+    min-height: 1em;
     font-size: 0.9rem;
-    resize: vertical; // Disable resizing by the user
-    overflow-y: auto; // Enable vertical scrolling
+    resize: vertical;
+    overflow-y: auto;
   }
 
   .change-input {
@@ -58,59 +58,63 @@
   }
 
   .with-input {
-    background-color: rgb(35, 91, 232);
-    color: rgb(234, 255, 0);
+    background-color: var(--input-color);
+    color: var(--input-text-color);
 
     &:hover {
-      background-color: rgb(7, 11, 66);
-      color: white;
+      background-color: var(--hover-color);
+      color: var(--text-color);
     }
   }
 }
 
-.add-truck-block {
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
 .tableWrapper {
   max-width: 100%;
-  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-// @media screen and (max-width: 900px) {
-//   .truckTable {
-//     overflow-x: auto;
-//     display: block;
-//   }
+// TODO: Fix this
+@media screen and (max-width: 900px) {
+  .tableWrapper {
+    padding: 1rem;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .truckTable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 
-//   .truckTable thead,
-//   .truckTable tbody,
-//   .truckTable th,
-//   .truckTable td,
-//   .truckTable tr {
-//     display: block;
-//   }
+    thead {
+      width: 1.5rem;
 
-//   .truckTable tbody tr {
-//     display: flex;
-//     flex-wrap: wrap;
-//     width: auto;
-//   }
+      tr {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        th {
+          height: 50px;
+        }
+      }
+    }
+    tr {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
 
-//   .truckTable thead {
-//     display: flex;
-//     flex-wrap: wrap;
-//   }
-
-//   .truckTable td,
-//   .truckTable th {
-//     flex-grow: 1;
-//     flex-basis: 100%;
-//     text-align: left;
-//   }
-// }
+    tbody {
+      display: flex;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}

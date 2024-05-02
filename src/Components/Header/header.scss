@@ -1,21 +1,30 @@
 .nav {
-  background-color: rgb(52, 52, 156);
+  background-color: var(--main-color);
   height: 8rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
 }
 
 .logo {
-  color: white;
+  color: var(--text-color);
   font-size: 2.5rem;
   font-weight: bolder;
 }
 
 a {
-  color: white;
+  color: var(--text-color);
   padding: 1rem;
   font-weight: bold;
+}
+
+.theme-button {
+  border: none;
+  color: white;
+  background-color: var(--main-color);
+  font-size: 1.5rem;
+  cursor: pointer;
 }

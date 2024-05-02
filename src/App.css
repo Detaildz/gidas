@@ -1,1 +1,80 @@
+:root {
+  /* Light theme */
+  --background-color-light: rgb(209, 223, 251);
+  --background-gradient-light: linear-gradient(
+      0deg,
+      rgb(193, 216, 241) 0%,
+      rgb(240, 240, 240) 30%
+    )
+    fixed;
+  --main-color-light: rgb(52, 52, 156);
+  --text-color-light: white;
+  --hover-color-light: rgb(7, 11, 66);
+  --input-color-light: rgb(35, 91, 232);
+  --input-text-color-light: rgb(234, 255, 0);
+  --table-row-color-light: rgb(208, 204, 200);
+  --button-text-color-light: rgb(219, 219, 219);
+  --button-active-color-100-light: rgb(63, 63, 164);
+  --button-active-color-200-light: rgb(88, 88, 183);
+  --button-delete-color-light: rgb(174, 51, 51);
+  --select-week-color-light: rgb(124, 18, 244, 0.2);
+  --select-week-hover-color-light: rgb(149, 77, 230, 0.5);
+  --button-add-truck-hover-light: rgba(255, 255, 255, 0.2);
 
+  /* Dark Theme */
+  --background-color-dark: rgb(120, 120, 120);
+  --background-gradient-dark: linear-gradient(
+    0deg,
+    rgb(111, 138, 158) 0%,
+    rgb(220, 220, 220) 30%
+  );
+  --main-color-dark: rgb(1, 1, 24);
+  --text-color-dark: white;
+  --hover-color-dark: rgb(29, 2, 2);
+  --input-color-dark: rgb(48, 9, 22);
+  --input-text-color-dark: rgb(180, 184, 137);
+  --table-row-color-dark: rgb(36, 34, 34);
+  --button-text-color-dark: rgb(219, 219, 219);
+  --button-active-color-100-dark: rgb(122, 122, 126);
+  --button-active-color-200-dark: rgb(66, 66, 67);
+  --button-delete-color-dark: rgb(174, 51, 51);
+  --select-week-color-dark: rgba(52, 51, 53, 0.2);
+  --select-week-hover-color-dark: rgba(63, 58, 70, 0.5);
+  --button-add-truck-hover-dark: rgba(195, 193, 193, 0.2);
+}
+
+.light-theme {
+  --background-color: var(--background-color-light);
+  --background-gradient: var(--background-gradient-light);
+  --main-color: var(--main-color-light);
+  --text-color: var(--text-color-light);
+  --hover-color: var(--hover-color-light);
+  --input-color: var(--input-color-light);
+  --input-text-color: var(--input-text-color-light);
+  --table-row-color: var(--table-row-color-light);
+  --button-text-color: var(--button-text-color-light);
+  --button-active-color-100: var(--button-active-color-100-light);
+  --button-active-color-200: var(--button-active-color-200-light);
+  --button-delete-color: var(--button-delete-color-light);
+  --select-week-color: var(--select-week-color-light);
+  --select-week-hover-color: var(--select-week-hover-color-light);
+  --button-add-truck-hover: var(--button-add-truck-hover-light);
+}
+
+.dark-theme {
+  --background-color: var(--background-color-dark);
+  --background-gradient: var(--background-gradient-dark);
+  --main-color: var(--main-color-dark);
+  --text-color: var(--text-color-dark);
+  --hover-color: var(--hover-color-dark);
+  --input-color: var(--input-color-dark);
+  --input-text-color: var(--input-text-color-dark);
+  --table-row-color: var(--table-row-color-dark);
+  --button-text-color: var(--button-text-color-dark);
+  --button-active-color-100: var(--button-active-color-100-dark);
+  --button-active-color-200: var(--button-active-color-200-dark);
+  --button-delete-color: var(--button-delete-color-dark);
+  --select-week-color: var(--select-week-color-dark);
+  --select-week-hover-color: var(--select-week-hover-color-dark);
+  --button-add-truck-hover: var(--button-add-truck-hover-dark);
+}

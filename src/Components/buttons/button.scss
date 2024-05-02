@@ -4,17 +4,17 @@
 
   button {
     padding: 0.8rem 1.2rem;
-    background-color: rgb(52, 52, 156);
+    background-color: var(--main-color);
     border-radius: 0.5rem;
     border: none;
-    color: rgb(219, 219, 219);
+    color: var(--button-text-color);
     font-weight: bold;
 
     &:hover {
-      background-color: rgb(63, 63, 164);
+      background-color: var(--button-active-color-100);
     }
     &:active {
-      background-color: rgb(88, 88, 183);
+      background-color: var(--button-active-color-200);
     }
   }
 
@@ -25,7 +25,7 @@
 
 .change-button {
   padding: 0.3rem 1.2rem;
-  background-color: rgb(52, 52, 156);
+  background-color: var(--main-color);
   border-radius: 0.5rem;
   border: none;
   color: bisque;
@@ -33,8 +33,8 @@
 }
 
 .delete-button {
-  background-color: red;
-  color: white;
+  background-color: var(--button-delete-color);
+  color: var(--text-color);
   border: none;
 }
 
@@ -47,14 +47,14 @@
     font-weight: bold;
     font-size: 1.5rem;
 
-    color: rgb(52, 52, 156);
+    color: var(--main-color);
   }
 }
 .week-buttons {
   display: flex;
   gap: 1rem;
   .week-select {
-    background-color: rgb(124, 18, 244, 0.2);
+    background-color: var(--select-week-color);
     color: rgb(0, 0, 0);
     padding: 0.8rem;
     border-radius: 0.5rem;
@@ -63,26 +63,26 @@
     cursor: pointer;
 
     &:hover {
-      background-color: rgb(149, 77, 230, 0.5);
+      background-color: var(--select-week-hover-color);
     }
   }
 
   .selected-week {
     font-weight: bold;
     font-size: 1.4rem;
-    color: rgb(52, 52, 156);
+    color: var(--main-color);
     margin: 0 1rem;
   }
 }
 
 .add-truck {
   background: none;
-  color: white;
-  border: 1px solid white;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--button-add-truck-hover);
   }
 }

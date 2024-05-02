@@ -7,11 +7,11 @@ import { AppContext } from '../../context/AppContext';
 // import button.scss
 import './button.scss';
 
-export const AddTruck = ({ category }) => {
+export const AddTruck = ({ category, country }) => {
   const { handleAddTruck } = useContext(AppContext);
 
   const handleClick = () => {
-    handleAddTruck(category);
+    handleAddTruck(category, {}, country);
   };
 
   return (
@@ -24,4 +24,5 @@ export const AddTruck = ({ category }) => {
 
 AddTruck.propTypes = {
   category: PropTypes.oneOf(['import', 'export']).isRequired,
+  country: PropTypes.string.isRequired,
 };
